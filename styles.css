@@ -1,0 +1,90 @@
+.back { color: #c62828; font-weight: bold; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+
+html, body { margin: 0; }
+body {
+  background-color: #fff8e1;
+  font-family: Arial, sans-serif;
+  color: #333;
+  text-align: center;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+/* Headings */
+h1 { color: #c62828; font-size: 40px; margin: 16px 0 4px; }
+h2 { color: #4e342e; font-size: 28px; margin-top: 24px; }
+h3 { color: #2e7d32; }
+
+/* Header layout */
+header {
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  padding: 10px 16px;
+  display: flex;                 /* new */
+  align-items: center;           /* new */
+  justify-content: space-between;/* new */
+  gap: 12px;                     /* new */
+}
+
+/* Nav as a row */
+nav {
+  display: flex;   /* new */
+  gap: 18px;       /* new – spacing between links */
+}
+
+/* Optional: reset old margin if you still have it */
+nav a { margin: 0; }
+/* Hero */
+.hero img { width: 100%; max-height: 320px; object-fit: cover; display: block; }
+.lead { margin: 8px 0 16px; }
+
+/* Menu list */
+ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;          /* new */
+  flex-wrap: wrap;        /* new: wrap to next line */
+  gap: 12px;              /* new: space between items */
+  justify-content: center;/* new: center the row */
+}
+
+li {
+  background-color: #ffe0b2;
+  margin: 0;              /* changed: flex handles spacing */
+  padding: 10px;
+  width: 220px;           /* fixed card width */
+  border-radius: 10px;
+  transition: background-color .2s, transform .15s, box-shadow .2s;
+  cursor: pointer;
+}
+
+li:hover {
+  background-color: #ffd199;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+/* Buttons */
+.cta { margin: 16px 0 24px; }
+.btn { display: inline-block; background: #2e7d32; color: #fff; padding: 12px 18px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 4px; }
+.btn.secondary { background: #c62828; }
+
+footer { padding: 20px 0; }
+.brand { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 0; }
+.logo { height: 36px; width: auto; }
+nav a {
+  color: #c62828;         /* red */
+  text-decoration: none;  /* remove underline */
+  font-weight: bold;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+li { display: flex; justify-content: space-between; align-items: center; }
+.name { font-weight: 600; }
+.price { color: #4e342e; font-weight: bold; }
+li { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+.price { color: #4e342e; font-weight: bold; margin-left: 10px; }
+.name { font-weight: 600; text-transform: capitalize; flex: 1; }
