@@ -88,3 +88,17 @@ li { display: flex; justify-content: space-between; align-items: center; }
 li { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
 .price { color: #4e342e; font-weight: bold; margin-left: 10px; }
 .name { font-weight: 600; text-transform: capitalize; flex: 1; }
+/* Responsive: phones */
+@media (max-width: 640px) {
+  h1 { font-size: 28px; }
+  h2 { font-size: 22px; }
+  .hero img { max-height: 220px; }
+
+  /* Buttons stack nicely */
+  .cta { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .btn { width: 100%; max-width: 280px; }
+
+  /* Menu cards full width */
+  ul { gap: 10px; }
+  li { width: 100%; max-width: 320px; padding: 12px 14px; }
+}
