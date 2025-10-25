@@ -23,6 +23,6 @@ A clean, mobile-friendly catering menu with categories and one-click ordering.
 - Hosted via GitHub Pages (Settings → Pages → Branch: main → /root)
 
 ## Contact
-- Email: yourname@gmail.com
-- WhatsApp: +9715XXXXXXXXX
-- Instagram: YOUR_USERNAME
+- Email: innams87@gmail.com
+- WhatsApp: +971509459509
+- Instagram: chefinna
