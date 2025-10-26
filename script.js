@@ -1,10 +1,8 @@
-// Debug so we know the file runs
 console.log("JS loaded");
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM ready");
 
-  // Auto year
   const y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 
@@ -28,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (totalEl) totalEl.textContent = total.toFixed(2).replace(/\.00$/, "");
   }
 
-  // One click listener for all items (event delegation)
+  // Event delegation on the #menu container
   menu.addEventListener("click", (e) => {
     const li = e.target.closest("li");
     if (!li || !menu.contains(li)) return;
@@ -36,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     compute();
   });
 
-  // Keyboard support
   menu.addEventListener("keydown", (e) => {
     const li = e.target.closest("li");
     if (!li || !menu.contains(li)) return;
@@ -54,6 +51,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial compute
   compute();
 });
