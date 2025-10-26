@@ -53,3 +53,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   compute();
 });
+// Build WhatsApp order from selected items
+const waBtn = document.getElementById("waOrder");
+const WA_NUMBER = "971509459509"; // <-- your number (no +)
+
+if (waBtn) {
+  waBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const menu = document.getElementById("menu");
+    const selected = Array.from(menu.querySelectorAll("li.selected"));
+
+    const items = selected
+      .map(li => li.querySelector(".name")?.textContent.trim())
+      .filter(Boolean);
+
+    const total = selected.reduce((sum, li) => sum + Number(li.dataset.price || 0), 0);
+
+    const msg = items.length
+      ? `Hello Munna Catering, I'd like to order:\n- ${items.join("\n- ")}\n\nTotal: AED ${total}\nDelivery location: ____\nPreferred time: ____\nName: ____`
+      : `Hello Munna Catering, I'd like to order.`;
+
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
+  });
+}
