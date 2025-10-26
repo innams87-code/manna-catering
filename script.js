@@ -1,7 +1,6 @@
 // Debug so we know the file runs
 console.log("JS loaded");
 
-// Run after the HTML is parsed
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM ready");
 
@@ -29,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (totalEl) totalEl.textContent = total.toFixed(2).replace(/\.00$/, "");
   }
 
-  // One listener for all clicks inside #menu
+  // One click listener for all items (event delegation)
   menu.addEventListener("click", (e) => {
     const li = e.target.closest("li");
     if (!li || !menu.contains(li)) return;
@@ -37,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     compute();
   });
 
-  // Keyboard support (Enter/Space)
+  // Keyboard support
   menu.addEventListener("keydown", (e) => {
     const li = e.target.closest("li");
     if (!li || !menu.contains(li)) return;
