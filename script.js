@@ -3,6 +3,10 @@ console.log("MC build v16 loaded");
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM ready v16");
+  const printBtn = document.getElementById("print");
+if (printBtn) printBtn.addEventListener("click", () => window.print());
+
+
 
   // Elements
   const y = document.getElementById("year");
