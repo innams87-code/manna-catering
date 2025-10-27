@@ -4,7 +4,30 @@ console.log("MC build v16 loaded");
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM ready v16");
   const printBtn = document.getElementById("print");
+const copyBtn  = document.getElementById("copy");
+
 if (printBtn) printBtn.addEventListener("click", () => window.print());
+
+if (copyBtn) {
+  copyBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const { msg } = buildOrderMessage(); // uses the same function as WhatsApp
+    try {
+      await navigator.clipboard.writeText(msg);
+      copyBtn.textContent = "Copied!";
+    } catch (_) {
+      // Fallback for older Safari
+      const ta = document.createElement("textarea");
+      ta.value = msg;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      copyBtn.textContent = "Copied!";
+    }
+    setTimeout(() => (copyBtn.textContent = "Copy order"), 1200);
+  });
+}
 
 
 
