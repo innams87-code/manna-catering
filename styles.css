@@ -139,3 +139,14 @@ background: #eee; font-weight: 700; cursor: pointer;
 .group-actions { margin: 6px 0 8px; }
 .btn.tiny { padding: 4px 8px; font-size: 12px; border-radius: 6px; margin-left: 6px; }
 .btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
+/* Print-friendly receipt */
+@media print {
+header, .hero, .group-actions, .menu-group ul, #cart .btn, nav, footer, .back { display: none !important; }
+body { background: #fff; color: #000; }
+#menu h2 { margin-top: 0; }
+#summary { box-shadow: none; border: 1px solid #000; }
+#summary .summary-title { font-weight: 700; margin-bottom: 8px; }
+}
+
+Optional small style polish (if not there yet):
+.btn.small { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
