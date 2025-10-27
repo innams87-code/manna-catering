@@ -78,24 +78,35 @@ function compute() {
 
 // Event delegation: +, −, or li body toggle (0 ↔ 1)
 menu.addEventListener("click", (e) => {
-const plus = e.target.closest(".plus");
-const minus = e.target.closest(".minus");
-const li = e.target.closest("li");
-if (!li || !menu.contains(li)) return;
-  if (plus) {
-  setQty(li, Number(li.dataset.qty || 0) + 1);
-  return;
-}
-if (minus) {
-  setQty(li, Number(li.dataset.qty || 0) - 1);
-  return;
-}
-if (!e.target.closest(".qty")) {
-  const current = Number(li.dataset.qty || 0);
-  setQty(li, current === 0 ? 1 : 0);
-}
-  });
+  // 1) Group action buttons
+  const gbtn = e.target.closest(".group-actions .btn");
+  if (gbtn) {
+    e.preventDefault();
+    const gid = gbtn.dataset.group;          // "mains" | "breads" | "drinks"
+    const action = gbtn.dataset.action;      // "add1" | "clear"
+    const lis = document.querySelectorAll(`#${gid} li`);
+    lis.forEach(li => {
+      const current = Number(li.dataset.qty || 0);
+      setQty(li, action === "add1" ? current + 1 : 0);
+    });
+    return;
+  }
 
+  // 2) Item-level + / − controls
+  const plus = e.target.closest(".plus");
+  const minus = e.target.closest(".minus");
+  const li = e.target.closest("li");
+  if (!li || !menu.contains(li)) return;
+
+  if (plus) { setQty(li, Number(li.dataset.qty || 0) + 1); return; }
+  if (minus) { setQty(li, Number(li.dataset.qty || 0) - 1); return; }
+
+  // 3) Click on the item (not on qty controls): toggle 0 ↔ 1
+  if (!e.target.closest(".qty")) {
+    const current = Number(li.dataset.qty || 0);
+    setQty(li, current === 0 ? 1 : 0);
+  }
+});
 // Clear all
 if (clearBtn) {
 clearBtn.addEventListener("click", () => {
