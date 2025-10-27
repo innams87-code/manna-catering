@@ -1,8 +1,8 @@
-// MC build v14
-console.log("MC build v14 loaded");
+// MC build v16
+console.log("MC build v16 loaded");
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM ready v14");
+  console.log("DOM ready v16");
 
   // Elements
   const y = document.getElementById("year");
@@ -13,15 +13,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalEl = document.getElementById("total");
   const clearBtn = document.getElementById("clear");
   const waBtn = document.getElementById("waOrder");
-
   const summary = document.getElementById("summary");
   const summaryList = document.getElementById("summaryList");
 
-  if (!menu) { console.warn("No #menu"); return; }
+  if (!menu) { console.warn("No #menu found"); return; }
 
   const items = Array.from(menu.querySelectorAll("li"));
 
-  // Add qty controls once
+  // Add qty controls
   items.forEach(li => {
     if (!li.dataset.qty) li.dataset.qty = "0";
     if (!li.querySelector(".qty")) {
@@ -59,17 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (e) { console.warn("loadCart error", e); }
   }
 
-  function setQty(li, newQty) {
-    newQty = Math.max(0, Math.min(99, Number(newQty) || 0));
-    li.dataset.qty = String(newQty);
-    const q = li.querySelector(".q");
-    if (q) q.textContent = newQty;
-    if (newQty > 0) li.classList.add("selected");
-    else li.classList.remove("selected");
-    compute();
-    saveCart();
-  }
-
   function compute() {
     let itemsCount = 0, total = 0;
     const lines = [];
@@ -80,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = (li.querySelector(".name")?.textContent || "Item").trim();
       const price = Number(li.dataset.price || 0);
       const lineTotal = qty * price;
+
       itemsCount += qty;
       total += lineTotal;
       lines.push({ name, qty, lineTotal });
@@ -100,16 +89,18 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("");
       }
     }
+
+    saveCart();
   }
 
-  // Group and item click handling
+  // Clicks: group buttons, +/−, item toggle
   menu.addEventListener("click", (e) => {
-    // Group buttons
+    // Group buttons (+1 each / Clear)
     const gbtn = e.target.closest(".group-actions .btn");
     if (gbtn) {
       e.preventDefault();
-      const gid = gbtn.dataset.group;      // mains/breads/drinks
-      const action = gbtn.dataset.action;  // add1/clear
+      const gid = gbtn.dataset.group;
+      const action = gbtn.dataset.action;
       const lis = document.querySelectorAll(`#${gid} li`);
       lis.forEach(li => {
         const current = Number(li.dataset.qty || 0);
@@ -118,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Item controls
     const plus = e.target.closest(".plus");
     const minus = e.target.closest(".minus");
     const li = e.target.closest("li");
@@ -127,12 +117,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (plus) { setQty(li, Number(li.dataset.qty || 0) + 1); return; }
     if (minus) { setQty(li, Number(li.dataset.qty || 0) - 1); return; }
 
-    // Toggle 0 ↔ 1 if clicking item area
     if (!e.target.closest(".qty")) {
       const current = Number(li.dataset.qty || 0);
       setQty(li, current === 0 ? 1 : 0);
     }
   });
+
+  function setQty(li, newQty) {
+    newQty = Math.max(0, Math.min(99, Number(newQty) || 0));
+    li.dataset.qty = String(newQty);
+    const q = li.querySelector(".q");
+    if (q) q.textContent = newQty;
+    if (newQty > 0) li.classList.add("selected");
+    else li.classList.remove("selected");
+    compute();
+  }
 
   // Clear all
   if (clearBtn) {
@@ -143,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // WhatsApp order (desktop + mobile)
+  // WhatsApp order
   function buildOrderMessage() {
     const lines = [];
     let total = 0;
@@ -178,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Restore and compute initial
+  // Load and compute
   loadCart();
   compute();
 });
