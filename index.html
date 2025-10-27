@@ -4,82 +4,101 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Munna Catering Services</title>
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-  <div class="brand">
-  <img src="logo.png" alt="Munna Catering logo" class="logo">
-  Munna Catering
-</div>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#menu">Menu</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+    <div class="brand">
+      <img src="logo.png" alt="Munna Catering logo" class="logo">
+      Munna Catering
+    </div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
   <section id="home" class="hero">
-  <h1>Munna Catering Services</h1>
-  <img src="https://www.w3schools.com/w3images/steak.jpg" alt="Delicious dish">
-  <p class="lead">Welcome to our restaurant menu</p>
-  <a href="#menu">visit our menu</a>
-  <div class="cta">
-    <a id="waOrder" class="btn" href="https://wa.me/971509459509?text=Hello%20Munna%20Catering%2C%20I%27d%20like%20to%20order%3A%0A-%20Butter%20Chicken%20x1%0A-%20Parotta%20x2%0A%0ADelivery%20location%3A%20____%0APreferred%20time%3A%20____%0AName%3A%20____" target="_blank">Order on WhatsApp</a>
-    <a class="btn secondary" href="tel:+971509459509">Call Now</a>
-  </div>
-</section>
+    <h1>Munna Catering Services</h1>
+    <img src="https://www.w3schools.com/w3images/steak.jpg" alt="Delicious dish">
+    <p class="lead">Welcome to our restaurant menu</p>
+    <a href="#menu">visit our menu</a>
+    <div class="cta">
+      <a id="waOrder" class="btn" href="#">Order on WhatsApp</a>
+      <a class="btn secondary" href="tel:+971509459509">Call Now</a>
+    </div>
+  </section>
+
   <section id="menu">
-  <h2>Menu</h2>
-    <p id="cart"> Items: <span id="count">0</span> • Total: AED <span id="total">0</span> <button id="clear" class="btn small secondary" type="button">Clear</button> </p>
+    <h2>Menu</h2>
+
+    <p id="cart">
+      Items: <span id="count">0</span> • Total: AED <span id="total">0</span>
+      <button id="clear" class="btn small secondary" type="button">Clear</button>
+    </p>
+
+    <!-- Order summary box -->
     <div id="summary" class="summary hidden">
-  <ul id="summaryList"></ul>
-</div>
-  <div class="menu-group" id="mains">
-  <h3>Mains</h3>
-    <div class="group-actions">
-  <button class="btn tiny" data-group="mains" data-action="add1">+1 each</button>
-  <button class="btn tiny secondary" data-group="mains" data-action="clear">Clear</button>
-</div>
-  <ul>
-    <li data-price="24"><span class="name">Butter Chicken</span><span class="price">AED 24</span></li>
-    <li data-price="15"><span class="name">Chicken Biryani</span><span class="price">AED 15</span></li>
-    <li data-price="20"><span class="name">Beef Curry</span><span class="price">AED 20</span></li>
-  </ul>
-</div>
+      <ul id="summaryList"></ul>
+    </div>
 
-<div class="menu-group" id="breads">
-  <h3>Breads</h3>
-  <div class="group-actions">
-  <button class="btn tiny" data-group="breads" data-action="add1">+1 each</button>
-  <button class="btn tiny secondary" data-group="breads" data-action="clear">Clear</button>
-</div>
-  <ul>
-    <li data-price="3"><span class="name">Parotta</span><span class="price">AED 3</span></li>
-  </ul>
-</div>
+    <div class="menu-group" id="mains">
+      <h3>Mains</h3>
+      <div class="group-actions">
+        <button class="btn tiny" data-group="mains" data-action="add1">+1 each</button>
+        <button class="btn tiny secondary" data-group="mains" data-action="clear">Clear</button>
+      </div>
+      <ul>
+        <li data-price="24"><span class="name">Butter Chicken</span><span class="price">AED 24</span></li>
+        <li data-price="15"><span class="name">Chicken Biryani</span><span class="price">AED 15</span></li>
+        <li data-price="20"><span class="name">Beef Curry</span><span class="price">AED 20</span></li>
+      </ul>
+    </div>
 
-<div class="menu-group" id="drinks">
-  <h3>Drinks</h3>
-  <div class="group-actions">
-  <button class="btn tiny" data-group="drinks" data-action="add1">+1 each</button>
-  <button class="btn tiny secondary" data-group="drinks" data-action="clear">Clear</button>
-</div>
-  <ul>
-    <li data-price="12"><span class="name">Fresh Juice</span><span class="price">AED 12</span></li>
-  </ul>
-</div>
-</section>
- <section id="contact"> <h3>All types of orders are taken</h3> <p>Contact us</p> <p> <a href="mailto:yourname@gmail.com" target="_blank" rel="noopener">Email us</a> • <a href="https://maps.google.com/?q=Munna+Catering+Al+Qusais+Dubai" target="_blank" rel="noopener">Find us on Google Maps</a> • <a href="https://instagram.com/YOUR_USERNAME" target="_blank" rel="noopener">Instagram</a> </p> </section>
+    <div class="menu-group" id="breads">
+      <h3>Breads</h3>
+      <div class="group-actions">
+        <button class="btn tiny" data-group="breads" data-action="add1">+1 each</button>
+        <button class="btn tiny secondary" data-group="breads" data-action="clear">Clear</button>
+      </div>
+      <ul>
+        <li data-price="3"><span class="name">Parotta</span><span class="price">AED 3</span></li>
+      </ul>
+    </div>
+
+    <div class="menu-group" id="drinks">
+      <h3>Drinks</h3>
+      <div class="group-actions">
+        <button class="btn tiny" data-group="drinks" data-action="add1">+1 each</button>
+        <button class="btn tiny secondary" data-group="drinks" data-action="clear">Clear</button>
+      </div>
+      <ul>
+        <li data-price="12"><span class="name">Fresh Juice</span><span class="price">AED 12</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h3>All types of orders are taken</h3>
+    <p>Contact us</p>
+    <p>
+      <a href="mailto:yourname@gmail.com" target="_blank" rel="noopener">Email us</a> •
+      <a href="https://maps.google.com/?q=Munna+Catering+Al+Qusais+Dubai" target="_blank" rel="noopener">Find us on Google Maps</a> •
+      <a href="https://instagram.com/YOUR_USERNAME" target="_blank" rel="noopener">Instagram</a>
+    </p>
+  </section>
+
   <p><a href="#home" class="back">Back to top ↑</a></p>
 
   <footer>
     <small>© <span id="year"></span> Munna Catering Services</small>
   </footer>
 
-  <script src="script.js?v=14" defer></script>
+  <!-- Only one script tag, with version to force reload -->
+  <script src="script.js?v=16" defer></script>
 </body>
 </html>
