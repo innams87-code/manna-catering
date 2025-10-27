@@ -36,8 +36,12 @@
   <section id="menu">
     <h2>Menu</h2>
 
-    <p id="cart"> Items: <span id="count">0</span> • Total: AED <span id="total">0</span> <button id="print" class="btn small" type="button">Print receipt</button> <button id="clear" class="btn small secondary" type="button">Clear</button> </p>
-
+<p id="cart">
+  Items: <span id="count">0</span> • Total: AED <span id="total">0</span>
+  <button id="copy" class="btn small" type="button">Copy order</button>
+  <button id="print" class="btn small" type="button">Print receipt</button>
+  <button id="clear" class="btn small secondary" type="button">Clear</button>
+</p>
     <!-- Order summary box -->
     <div id="summary" class="summary hidden">
       <ul id="summaryList"></ul>
@@ -96,6 +100,6 @@
   </footer>
 
   <!-- Only one script tag, with version to force reload -->
-  <script src="script.js?v=17" defer></script>
+  <script src="script.js?v=18" defer></script>
 </body>
 </html>
