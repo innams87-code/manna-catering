@@ -3,7 +3,95 @@ console.log("JS loaded");
 const summary = document.getElementById("summary");
 const summaryList = document.getElementById("summaryList");
 document.addEventListener("DOMContentLoaded", () => {
-console.log("DOM ready");
+  // ... your existing references and qty-controls code above ...
+
+  // After you define: const items = Array.from(menu.querySelectorAll("li"));
+  // and after you add .qty controls, add these:
+
+  const STORAGE_KEY = "mc_cart_v1";
+
+  function saveCart() {
+    const state = items.map(li => Number(li.dataset.qty || 0));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+  }
+
+  function loadCart() {
+    try {
+      const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      state.forEach((qty, i) => {
+        if (!items[i]) return;
+        qty = Number(qty) || 0;
+        items[i].dataset.qty = String(qty);
+        const q = items[i].querySelector(".q");
+        if (q) q.textContent = qty;
+        if (qty > 0) items[i].classList.add("selected");
+        else items[i].classList.remove("selected");
+      });
+    } catch (e) {
+      console.warn("loadCart error", e);
+    }
+  }
+
+  // In your compute() function, after you update count/total/summary, add:
+  // saveCart();
+  // and also keep this line to disable WA when total is 0:
+  // if (waBtn) waBtn.toggleAttribute("disabled", total === 0);
+
+  // Example compute() body (keep your summary logic):
+  function compute() {
+    let itemsCount = 0, total = 0;
+    const lines = [];
+
+    items.forEach(li => {
+      const qty = Number(li.dataset.qty || 0);
+      if (!qty) return;
+      const name = (li.querySelector(".name")?.textContent || "Item").trim();
+      const price = Number(li.dataset.price || 0);
+      const lineTotal = qty * price;
+      itemsCount += qty;
+      total += lineTotal;
+      lines.push({ name, qty, lineTotal });
+    });
+
+    if (countEl) countEl.textContent = itemsCount;
+    if (totalEl) totalEl.textContent = total.toFixed(2).replace(/\.00$/, "");
+    if (waBtn) waBtn.toggleAttribute("disabled", total === 0);
+
+    if (summary && summaryList) {
+      if (lines.length === 0) {
+        summary.classList.add("hidden");
+        summaryList.innerHTML = "";
+      } else {
+        summary.classList.remove("hidden");
+        summaryList.innerHTML = lines
+          .map(r => `<li><span>${r.name} x${r.qty}</span><strong>AED ${r.lineTotal}</strong></li>`)
+          .join("");
+      }
+    }
+
+    // Save after every change
+    saveCart();
+  }
+
+  // In your Clear button handler, also clear storage:
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      items.forEach(li => {
+        li.dataset.qty = "0";
+        const q = li.querySelector(".q"); if (q) q.textContent = "0";
+        li.classList.remove("selected");
+      });
+      try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+      compute();
+    });
+  }
+
+  // Load saved quantities on page load and then compute
+  loadCart();
+  compute();
+
+  // ... rest of your code (WhatsApp handler etc.) ...
+});
 
 // Footer year
 const y = document.getElementById("year");
