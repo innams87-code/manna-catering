@@ -138,3 +138,4 @@ background: #eee; font-weight: 700; cursor: pointer;
 .hidden { display: none !important; }
 .group-actions { margin: 6px 0 8px; }
 .btn.tiny { padding: 4px 8px; font-size: 12px; border-radius: 6px; margin-left: 6px; }
+.btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
