@@ -1,6 +1,7 @@
 // Debug so we know the script is running
 console.log("JS loaded");
-
+const summary = document.getElementById("summary");
+const summaryList = document.getElementById("summaryList");
 document.addEventListener("DOMContentLoaded", () => {
 console.log("DOM ready");
 
@@ -43,15 +44,36 @@ compute();
 }
 
 function compute() {
-let itemsCount = 0, total = 0;
-items.forEach(li => {
-const qty = Number(li.dataset.qty || 0);
-const price = Number(li.dataset.price || 0);
-itemsCount += qty;
-total += qty * price;
-});
-if (countEl) countEl.textContent = itemsCount;
-if (totalEl) totalEl.textContent = total.toFixed(2).replace(/.00$/, "");
+  let itemsCount = 0, total = 0;
+  const lines = [];
+
+  items.forEach(li => {
+    const qty = Number(li.dataset.qty || 0);
+    if (!qty) return;
+    const name = (li.querySelector(".name")?.textContent || "Item").trim();
+    const price = Number(li.dataset.price || 0);
+    const lineTotal = qty * price;
+
+    itemsCount += qty;
+    total += lineTotal;
+    lines.push({ name, qty, lineTotal });
+  });
+
+  if (countEl) countEl.textContent = itemsCount;
+  if (totalEl) totalEl.textContent = total.toFixed(2).replace(/\.00$/, "");
+  if (waBtn) waBtn.toggleAttribute("disabled", total === 0);
+
+  if (summary && summaryList) {
+    if (lines.length === 0) {
+      summary.classList.add("hidden");
+      summaryList.innerHTML = "";
+    } else {
+      summary.classList.remove("hidden");
+      summaryList.innerHTML = lines
+        .map(r => `<li><span>${r.name} x${r.qty}</span><strong>AED ${r.lineTotal}</strong></li>`)
+        .join("");
+    }
+  }
 }
 
 // Event delegation: +, −, or li body toggle (0 ↔ 1)
