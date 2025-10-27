@@ -104,6 +104,9 @@ if (copyBtn) {
     if (countEl) countEl.textContent = itemsCount;
     if (totalEl) totalEl.textContent = total.toFixed(2).replace(/\.00$/, "");
     if (waBtn) waBtn.toggleAttribute("disabled", total === 0);
+    if (waBtn)   waBtn.toggleAttribute("disabled", total === 0);
+if (printBtn) printBtn.toggleAttribute("disabled", total === 0);
+if (copyBtn)  copyBtn.toggleAttribute("disabled", total === 0);
 
     if (summary && summaryList) {
       if (lines.length === 0) {
