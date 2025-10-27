@@ -150,3 +150,4 @@ body { background: #fff; color: #000; }
 
 Optional small style polish (if not there yet):
 .btn.small { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
+.btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
