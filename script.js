@@ -1,6 +1,6 @@
 // MC build v16
-console.log("MC build v16 loaded");
-
+console.log('MC build v16 loaded');
+console.log('Munna site loaded'); // <-- add this line
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM ready v16");
   const printBtn = document.getElementById("print");
