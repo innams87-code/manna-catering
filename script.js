@@ -6,8 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const printBtn = document.getElementById("print");
 const copyBtn  = document.getElementById("copy");
 
-if (printBtn) printBtn.addEventListener("click", () => window.print());
-
+f (printBtn) {
+printBtn.addEventListener('click', () => {
+const timeEl = document.getElementById('receipt-time');
+  if (timeEl) {
+timeEl.textContent = new Date().toLocaleString('en-GB', { hour12: false });
+}
+window.print();
+});
+}
 if (copyBtn) {
   copyBtn.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -107,6 +114,8 @@ if (copyBtn) {
     if (waBtn)   waBtn.toggleAttribute("disabled", total === 0);
 if (printBtn) printBtn.toggleAttribute("disabled", total === 0);
 if (copyBtn)  copyBtn.toggleAttribute("disabled", total === 0);
+    const summaryTotalEl = document.getElementById('summaryTotal');
+if (summaryTotalEl) summaryTotalEl.textContent = fmt(total);
 
     if (summary && summaryList) {
       if (lines.length === 0) {
