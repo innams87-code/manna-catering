@@ -178,6 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
     printBtn.addEventListener('click', () => {
       const timeEl = document.getElementById('receipt-time');
       if (timeEl) timeEl.textContent = new Date().toLocaleString('en-GB', { hour12: false });
+      const idEl = document.getElementById('receipt-time');
+if (idEl) {
+const now = new Date().toLocaleString('en-GB', { hour12: false });
+const orderId = String(Date.now()).slice(-6);
+idEl.textContent = ${now} • Order #${orderId};
+}
+
       window.print();
     });
   }
