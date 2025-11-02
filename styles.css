@@ -140,12 +140,12 @@ background: #eee; font-weight: 700; cursor: pointer;
 .btn.tiny { padding: 4px 8px; font-size: 12px; border-radius: 6px; margin-left: 6px; }
 .btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
 /* Print-friendly receipt */
-@media print { #summary li { break-inside: avoid; } }
-/* Hide everything we don't want on paper */
+@media print {
+/* Hide everything except the receipt */
 header, nav, .hero, .cta, #cart, .group-actions, .menu-group, #contact, .back, footer,
 #menu > h2 { display: none !important; }
 
-/* Show only the summary (receipt) nicely */
+/* Show receipt nicely */
 #summary {
 display: block !important;
 box-shadow: none !important;
@@ -155,15 +155,20 @@ color: #000 !important;
 padding: 12px !important;
 margin: 0 !important;
 }
+
+/* Avoid breaking line items across pages */
+#summary li { break-inside: avoid; }
 }
 
-Optional small style polish (if not there yet):
+/* Optional: tighter margins on paper */
+@page { margin: 14mm; }
+
+/* Optional small polish (keep only one copy if you already have these) */
 .btn.small { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
 .btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
 .customer { display: flex; gap: 8px; justify-content: center; margin: 8px 0 12px; }
 .customer input { padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; min-width: 180px; }
-@media (max-width: 640px) { .customer { flex-direction: column; align-items: center; } .customer input { width: 100%; max-width: 320px; } }
-/* Print: keep receipt tidy */
-@media print { #summary li { break-inside: avoid; } }
-
-
+@media (max-width: 640px) {
+.customer { flex-direction: column; align-items: center; }
+.customer input { width: 100%; max-width: 320px; }
+}
