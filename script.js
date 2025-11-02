@@ -115,11 +115,11 @@ loadCustomer();
     if (totalEl) totalEl.textContent = fmt(total);
 
     const disable = total === 0;
-    if (waBtn) waBtn.disabled = disable;
-    if (printBtn) printBtn.disabled = disable;
-    if (copyBtn) copyBtn.disabled = disable;
-    const hasCustomer = (nameEl?.value?.trim() && locEl?.value?.trim());
+if (printBtn) printBtn.disabled = disable;
+if (copyBtn) copyBtn.disabled = disable;
+const hasCustomer = !!(nameEl?.value?.trim() && locEl?.value?.trim());
 if (waBtn) waBtn.disabled = (total === 0) || !hasCustomer;
+
 
     if (summaryTotalEl) summaryTotalEl.textContent = fmt(total);
 
