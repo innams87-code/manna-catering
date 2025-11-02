@@ -1,26 +1,29 @@
 // MC build v16
 console.log('MC build v16 loaded');
 console.log('Munna site loaded');
+// Save/load customer details
 const CUST_KEY = 'mc_customer_v1';
+
 function saveCustomer() {
-const data = {
-name: nameEl?.value || '',
-loc: locEl?.value || '',
-time: timeEl?.value || ''
-};
-try { localStorage.setItem(CUST_KEY, JSON.stringify(data)); } catch() {}
+  const data = {
+    name: nameEl?.value || '',
+    loc:  locEl?.value || '',
+    time: timeEl?.value || ''
+  };
+  try { localStorage.setItem(CUST_KEY, JSON.stringify(data)); } catch (e) {}
 }
+
 function loadCustomer() {
-try {
-const data = JSON.parse(localStorage.getItem(CUST_KEY) || '{}');
-if (nameEl && data.name) nameEl.value = data.name;
-if (locEl && data.loc) locEl.value = data.loc;
-if (timeEl && data.time) timeEl.value = data.time;
-} catch() {}
+  try {
+    const data = JSON.parse(localStorage.getItem(CUST_KEY) || '{}');
+    if (nameEl && data.name) nameEl.value = data.name;
+    if (locEl  && data.loc)  locEl.value  = data.loc;
+    if (timeEl && data.time) timeEl.value = data.time;
+  } catch (e) {}
 }
+
 [nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', saveCustomer));
 loadCustomer();
-
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM ready v16');
 
