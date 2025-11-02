@@ -54,6 +54,7 @@ saveCustomer();
 compute(); // re-check WhatsApp enable/disable immediately
 }));
   loadCustomer();
+  compute();
 
   // Items
   const items = [...menu.querySelectorAll('li[data-price]')];
