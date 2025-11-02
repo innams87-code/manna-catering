@@ -1,46 +1,46 @@
 // MC build v16
 console.log('MC build v16 loaded');
 console.log('Munna site loaded');
+
+document.addEventListener('DOMContentLoaded', () => {
+console.log('DOM ready v16');
+
+const fmt = (n) => Number(n).toFixed(2).replace(/.00$/, '');
+
+// Elements
+const printBtn = document.getElementById('print');
+const copyBtn = document.getElementById('copy');
+const y = document.getElementById('year');
+if (y) y.textContent = new Date().getFullYear();
+
+// Customer fields
+const nameEl = document.getElementById('cust-name');
+const locEl = document.getElementById('cust-location');
+const timeEl = document.getElementById('cust-time');
+
 // Save/load customer details
 const CUST_KEY = 'mc_customer_v1';
-
 function saveCustomer() {
-  const data = {
-    name: nameEl?.value || '',
-    loc:  locEl?.value || '',
-    time: timeEl?.value || ''
-  };
-  try { localStorage.setItem(CUST_KEY, JSON.stringify(data)); } catch (e) {}
+const data = {
+name: nameEl?.value || '',
+loc: locEl?.value || '',
+time: timeEl?.value || ''
+};
+try { localStorage.setItem(CUST_KEY, JSON.stringify(data)); } catch (e) {}
 }
-
 function loadCustomer() {
-  try {
-    const data = JSON.parse(localStorage.getItem(CUST_KEY) || '{}');
-    if (nameEl && data.name) nameEl.value = data.name;
-    if (locEl  && data.loc)  locEl.value  = data.loc;
-    if (timeEl && data.time) timeEl.value = data.time;
-  } catch (e) {}
+try {
+const data = JSON.parse(localStorage.getItem(CUST_KEY) || '{}');
+if (nameEl && data.name) nameEl.value = data.name;
+if (locEl && data.loc) locEl.value = data.loc;
+if (timeEl && data.time) timeEl.value = data.time;
+} catch (e) {}
 }
-
 [nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', saveCustomer));
 loadCustomer();
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM ready v16');
 
-  // Format helper: 60 -> "60", 60.5 -> "60.50"
-  const fmt = (n) => Number(n).toFixed(2).replace(/\.00$/, '');
-
-  // Elements
-  const printBtn = document.getElementById('print');
-  const copyBtn  = document.getElementById('copy');
-
-  const y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
-
-  // Customer fields (optional, if present in HTML)
-  const nameEl = document.getElementById('cust-name');
-  const locEl  = document.getElementById('cust-location');
-  const timeEl = document.getElementById('cust-time');
+// ... the rest of your code (menu, compute, etc.)
+});
 
   const menu = document.getElementById('menu');
   const countEl = document.getElementById('count');
