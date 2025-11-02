@@ -140,7 +140,7 @@ background: #eee; font-weight: 700; cursor: pointer;
 .btn.tiny { padding: 4px 8px; font-size: 12px; border-radius: 6px; margin-left: 6px; }
 .btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
 /* Print-friendly receipt */
-@media print {
+@media print { #summary li { break-inside: avoid; } }
 /* Hide everything we don't want on paper */
 header, nav, .hero, .cta, #cart, .group-actions, .menu-group, #contact, .back, footer,
 #menu > h2 { display: none !important; }
