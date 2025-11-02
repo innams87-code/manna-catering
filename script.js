@@ -49,7 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (timeEl && data.time) timeEl.value = data.time;
     } catch (e) {}
   }
-  [nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', saveCustomer));
+ [nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', () => {
+saveCustomer();
+compute(); // re-check WhatsApp enable/disable immediately
+}));
   loadCustomer();
 
   // Items
