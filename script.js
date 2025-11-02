@@ -1,10 +1,11 @@
-// MC build v30
-console.log('MC build v30 loaded');
+// MC build v32
+console.log('MC build v32 loaded');
 console.log('Munna site loaded');
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM ready v30');
+  console.log('DOM ready v32');
 
+  // Format helper: 60 -> "60", 60.5 -> "60.50"
   const fmt = (n) => Number(n).toFixed(2).replace(/\.00$/, '');
 
   // Elements
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!menu) { console.warn('No #menu found'); return; }
 
-  // Customer save/load (inside DOMContentLoaded)
+  // Customer save/load
   const CUST_KEY = 'mc_customer_v1';
   function saveCustomer() {
     const data = {
@@ -49,13 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (timeEl && data.time) timeEl.value = data.time;
     } catch (e) {}
   }
- [nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', () => {
-saveCustomer();
-compute(); // re-check WhatsApp enable/disable immediately
-}));
+  [nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', () => {
+    saveCustomer();
+    compute(); // re-check WA enable/disable immediately when typing
+  }));
   loadCustomer();
 
-  // Items
+  // Items (only priced items)
   const items = [...menu.querySelectorAll('li[data-price]')];
   items.forEach(li => {
     if (!li.dataset.qty) li.dataset.qty = '0';
@@ -72,7 +73,7 @@ compute(); // re-check WhatsApp enable/disable immediately
   });
 
   // Cart storage
-  const STORAGE_KEY = 'mc_cart_v30';
+  const STORAGE_KEY = 'mc_cart_v32';
   function saveCart() {
     try {
       const state = items.map(li => Number(li.dataset.qty || 0));
@@ -91,6 +92,19 @@ compute(); // re-check WhatsApp enable/disable immediately
         li.classList.toggle('selected', qty > 0);
       });
     } catch (e) {}
+  }
+
+  // Helper to disable both <button> and <a>
+  function setDisabled(el, disabled) {
+    if (!el) return;
+    if ('disabled' in el) el.disabled = disabled;     // buttons
+    if (disabled) {                                   // anchors + styling
+      el.setAttribute('aria-disabled', 'true');
+      el.setAttribute('tabindex', '-1');
+    } else {
+      el.removeAttribute('aria-disabled');
+      el.removeAttribute('tabindex');
+    }
   }
 
   function compute() {
@@ -124,18 +138,27 @@ compute(); // re-check WhatsApp enable/disable immediately
       }
     }
 
-    // Enable/disable buttons
+    // Enable/disable actions
     const disable = total === 0;
-    if (printBtn) printBtn.disabled = disable;
-    if (copyBtn)  copyBtn.disabled  = disable;
+    setDisabled(printBtn, disable);
+    setDisabled(copyBtn,  disable);
     const hasCustomer = !!(nameEl?.value?.trim() && locEl?.value?.trim());
-    if (waBtn) waBtn.disabled = disable || !hasCustomer;
+    setDisabled(waBtn, disable || !hasCustomer);
 
     saveCart();
   }
 
-  // Click handlers
+  function setQty(li, newQty) {
+    newQty = Math.max(0, Math.min(99, Number(newQty) || 0));
+    li.dataset.qty = String(newQty);
+    li.querySelector('.q')?.textContent = newQty;
+    li.classList.toggle('selected', newQty > 0);
+    compute();
+  }
+
+  // Delegated clicks
   menu.addEventListener('click', (e) => {
+    // Group actions (+1 each / Clear)
     const gbtn = e.target.closest('.group-actions .btn');
     if (gbtn) {
       e.preventDefault();
@@ -153,19 +176,12 @@ compute(); // re-check WhatsApp enable/disable immediately
     if (e.target.closest('.plus'))  { setQty(li, Number(li.dataset.qty || 0) + 1); return; }
     if (e.target.closest('.minus')) { setQty(li, Number(li.dataset.qty || 0) - 1); return; }
 
+    // Click card toggles 0/1 if not on the qty controls
     if (!e.target.closest('.qty')) {
       const current = Number(li.dataset.qty || 0);
       setQty(li, current === 0 ? 1 : 0);
     }
   });
-
-  function setQty(li, newQty) {
-    newQty = Math.max(0, Math.min(99, Number(newQty) || 0));
-    li.dataset.qty = String(newQty);
-    li.querySelector('.q')?.textContent = newQty;
-    li.classList.toggle('selected', newQty > 0);
-    compute();
-  }
 
   // Clear all
   if (clearBtn) {
@@ -180,7 +196,7 @@ compute(); // re-check WhatsApp enable/disable immediately
     });
   }
 
-  // Build message
+  // Build WhatsApp/Copy message
   function buildOrderMessage() {
     const lines = [];
     let total = 0;
@@ -247,10 +263,14 @@ Preferred time: ${ctime}`;
     });
   }
 
-  // WhatsApp
+  // WhatsApp (block click if disabled)
   const WA_NUMBER = '971509459509'; // no +, no spaces
   if (waBtn) {
     waBtn.addEventListener('click', (e) => {
+      if (waBtn.getAttribute('aria-disabled') === 'true' || waBtn.disabled) {
+        e.preventDefault();
+        return;
+      }
       e.preventDefault();
       const { msg } = buildOrderMessage();
       const isMobile = /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
