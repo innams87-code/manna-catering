@@ -139,36 +139,36 @@ background: #eee; font-weight: 700; cursor: pointer;
 .group-actions { margin: 6px 0 8px; }
 .btn.tiny { padding: 4px 8px; font-size: 12px; border-radius: 6px; margin-left: 6px; }
 .btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
-/* Print-friendly receipt */
+/* ========== PRINT ONLY ========== */
 @media print {
-/* Hide everything except the receipt */
-header, nav, .hero, .cta, #cart, .group-actions, .menu-group, #contact, .back, footer,
-#menu > h2 { display: none !important; }
+  /* Hide everything except the receipt */
+  header, nav, .hero, .cta, #cart, .group-actions, .menu-group, #contact, .back, footer,
+  #menu > h2 { display: none !important; }
 
-/* Show receipt nicely */
-#summary {
-display: block !important;
-box-shadow: none !important;
-border: 1px solid #000 !important;
-background: #fff !important;
-color: #000 !important;
-padding: 12px !important;
-margin: 0 !important;
+  /* Show receipt nicely */
+  #summary {
+    display: block !important;
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+    background: #fff !important;
+    color: #000 !important;
+    padding: 12px !important;
+    margin: 0 !important;
+  }
+
+  /* Avoid page breaks inside items */
+  #summary li { break-inside: avoid; }
 }
 
-/* Avoid breaking line items across pages */
-#summary li { break-inside: avoid; }
-}
-
-/* Optional: tighter margins on paper */
+/* Page margins for paper */
 @page { margin: 14mm; }
 
-/* Optional small polish (keep only one copy if you already have these) */
+/* Optional small polish */
 .btn.small { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
 .btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
 .customer { display: flex; gap: 8px; justify-content: center; margin: 8px 0 12px; }
 .customer input { padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; min-width: 180px; }
 @media (max-width: 640px) {
-.customer { flex-direction: column; align-items: center; }
-.customer input { width: 100%; max-width: 320px; }
+  .customer { flex-direction: column; align-items: center; }
+  .customer input { width: 100%; max-width: 320px; }
 }
