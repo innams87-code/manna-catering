@@ -1,52 +1,28 @@
-// MC build v16
-console.log('MC build v16 loaded');
+// MC build v30
+console.log('MC build v30 loaded');
 console.log('Munna site loaded');
 
 document.addEventListener('DOMContentLoaded', () => {
-console.log('DOM ready v16');
+  console.log('DOM ready v30');
 
-const fmt = (n) => Number(n).toFixed(2).replace(/.00$/, '');
+  const fmt = (n) => Number(n).toFixed(2).replace(/\.00$/, '');
 
-// Elements
-const printBtn = document.getElementById('print');
-const copyBtn = document.getElementById('copy');
-const y = document.getElementById('year');
-if (y) y.textContent = new Date().getFullYear();
+  // Elements
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
 
-// Customer fields
-const nameEl = document.getElementById('cust-name');
-const locEl = document.getElementById('cust-location');
-const timeEl = document.getElementById('cust-time');
+  const printBtn = document.getElementById('print');
+  const copyBtn  = document.getElementById('copy');
+  const waBtn    = document.getElementById('waOrder');
+  const clearBtn = document.getElementById('clear');
 
-// Save/load customer details
-const CUST_KEY = 'mc_customer_v1';
-function saveCustomer() {
-const data = {
-name: nameEl?.value || '',
-loc: locEl?.value || '',
-time: timeEl?.value || ''
-};
-try { localStorage.setItem(CUST_KEY, JSON.stringify(data)); } catch (e) {}
-}
-function loadCustomer() {
-try {
-const data = JSON.parse(localStorage.getItem(CUST_KEY) || '{}');
-if (nameEl && data.name) nameEl.value = data.name;
-if (locEl && data.loc) locEl.value = data.loc;
-if (timeEl && data.time) timeEl.value = data.time;
-} catch (e) {}
-}
-[nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', saveCustomer));
-loadCustomer();
+  const nameEl = document.getElementById('cust-name');
+  const locEl  = document.getElementById('cust-location');
+  const timeEl = document.getElementById('cust-time');
 
-// ... the rest of your code (menu, compute, etc.)
-});
-
-  const menu = document.getElementById('menu');
+  const menu   = document.getElementById('menu');
   const countEl = document.getElementById('count');
   const totalEl = document.getElementById('total');
-  const clearBtn = document.getElementById('clear');
-  const waBtn = document.getElementById('waOrder');
   const summary = document.getElementById('summary');
   const summaryList = document.getElementById('summaryList');
   const summaryTotalEl = document.getElementById('summaryTotal');
@@ -55,10 +31,29 @@ loadCustomer();
 
   if (!menu) { console.warn('No #menu found'); return; }
 
-  // Only menu items with a price
-  const items = [...menu.querySelectorAll('li[data-price]')];
+  // Customer save/load (inside DOMContentLoaded)
+  const CUST_KEY = 'mc_customer_v1';
+  function saveCustomer() {
+    const data = {
+      name: nameEl?.value || '',
+      loc:  locEl?.value  || '',
+      time: timeEl?.value || ''
+    };
+    try { localStorage.setItem(CUST_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  function loadCustomer() {
+    try {
+      const data = JSON.parse(localStorage.getItem(CUST_KEY) || '{}');
+      if (nameEl && data.name) nameEl.value = data.name;
+      if (locEl  && data.loc)  locEl.value  = data.loc;
+      if (timeEl && data.time) timeEl.value = data.time;
+    } catch (e) {}
+  }
+  [nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', saveCustomer));
+  loadCustomer();
 
-  // Add qty controls if missing
+  // Items
+  const items = [...menu.querySelectorAll('li[data-price]')];
   items.forEach(li => {
     if (!li.dataset.qty) li.dataset.qty = '0';
     if (!li.querySelector('.qty')) {
@@ -73,26 +68,26 @@ loadCustomer();
     }
   });
 
-  // Storage
-  const STORAGE_KEY = 'mc_cart_v26';
+  // Cart storage
+  const STORAGE_KEY = 'mc_cart_v30';
   function saveCart() {
     try {
       const state = items.map(li => Number(li.dataset.qty || 0));
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch (_) {}
+    } catch (e) {}
   }
   function loadCart() {
     try {
       const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
       state.forEach((qty, i) => {
-        if (!items[i]) return;
+        const li = items[i];
+        if (!li) return;
         qty = Number(qty) || 0;
-        items[i].dataset.qty = String(qty);
-        const q = items[i].querySelector('.q');
-        if (q) q.textContent = qty;
-        items[i].classList.toggle('selected', qty > 0);
+        li.dataset.qty = String(qty);
+        li.querySelector('.q')?.textContent = qty;
+        li.classList.toggle('selected', qty > 0);
       });
-    } catch (e) { console.warn('loadCart error', e); }
+    } catch (e) {}
   }
 
   function compute() {
@@ -105,7 +100,6 @@ loadCustomer();
       const name = li.querySelector('.name')?.textContent.trim() || 'Item';
       const price = Number(li.dataset.price || 0);
       const lineTotal = qty * price;
-
       itemsCount += qty;
       total += lineTotal;
       lines.push({ name, qty, lineTotal });
@@ -113,18 +107,10 @@ loadCustomer();
 
     if (countEl) countEl.textContent = itemsCount;
     if (totalEl) totalEl.textContent = fmt(total);
-
-    const disable = total === 0;
-if (printBtn) printBtn.disabled = disable;
-if (copyBtn) copyBtn.disabled = disable;
-const hasCustomer = !!(nameEl?.value?.trim() && locEl?.value?.trim());
-if (waBtn) waBtn.disabled = (total === 0) || !hasCustomer;
-
-
     if (summaryTotalEl) summaryTotalEl.textContent = fmt(total);
 
     if (summary && summaryList) {
-      if (lines.length === 0) {
+      if (!lines.length) {
         summary.classList.add('hidden');
         summaryList.innerHTML = '';
       } else {
@@ -135,27 +121,23 @@ if (waBtn) waBtn.disabled = (total === 0) || !hasCustomer;
       }
     }
 
+    // Enable/disable buttons
+    const disable = total === 0;
+    if (printBtn) printBtn.disabled = disable;
+    if (copyBtn)  copyBtn.disabled  = disable;
+    const hasCustomer = !!(nameEl?.value?.trim() && locEl?.value?.trim());
+    if (waBtn) waBtn.disabled = disable || !hasCustomer;
+
     saveCart();
   }
 
-  function setQty(li, newQty) {
-    newQty = Math.max(0, Math.min(99, Number(newQty) || 0));
-    li.dataset.qty = String(newQty);
-    const q = li.querySelector('.q');
-    if (q) q.textContent = newQty;
-    li.classList.toggle('selected', newQty > 0);
-    compute();
-  }
-
-  // Delegated clicks: group buttons, plus/minus, or toggle
+  // Click handlers
   menu.addEventListener('click', (e) => {
-    // Group actions (+1 each / Clear)
     const gbtn = e.target.closest('.group-actions .btn');
     if (gbtn) {
       e.preventDefault();
       const { group: gid, action } = gbtn.dataset;
-      const lis = document.querySelectorAll(`#${gid} li[data-price]`);
-      lis.forEach(li => {
+      document.querySelectorAll(`#${gid} li[data-price]`).forEach(li => {
         const current = Number(li.dataset.qty || 0);
         setQty(li, action === 'add1' ? current + 1 : 0);
       });
@@ -174,25 +156,31 @@ if (waBtn) waBtn.disabled = (total === 0) || !hasCustomer;
     }
   });
 
+  function setQty(li, newQty) {
+    newQty = Math.max(0, Math.min(99, Number(newQty) || 0));
+    li.dataset.qty = String(newQty);
+    li.querySelector('.q')?.textContent = newQty;
+    li.classList.toggle('selected', newQty > 0);
+    compute();
+  }
+
   // Clear all
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       items.forEach(li => setQty(li, 0));
-      try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
-      compute();
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
       if (nameEl) nameEl.value = '';
-if (locEl) locEl.value = '';
-if (timeEl) timeEl.value = '';
-try { localStorage.removeItem('mc_customer_v1'); } catch(_) {}
-compute();
+      if (locEl)  locEl.value  = '';
+      if (timeEl) timeEl.value = '';
+      try { localStorage.removeItem(CUST_KEY); } catch (e) {}
+      compute();
     });
   }
 
-  // WhatsApp/Copy message with per-line subtotals + customer info
+  // Build message
   function buildOrderMessage() {
     const lines = [];
     let total = 0;
-
     for (const li of items) {
       const qty = Number(li.dataset.qty || 0);
       if (!qty) continue;
@@ -202,7 +190,6 @@ compute();
       total += lineTotal;
       lines.push(`${name} x${qty} — AED ${fmt(lineTotal)} (AED ${fmt(price)} ea)`);
     }
-
     if (!lines.length) return { msg: "Hello Munna Catering, I'd like to order.", total: 0 };
 
     const cname = nameEl?.value?.trim() || '____';
@@ -220,25 +207,23 @@ Preferred time: ${ctime}`;
     return { msg, total };
   }
 
-  // Print: set time and optional customer line, then print
+  // Print
   if (printBtn) {
     printBtn.addEventListener('click', () => {
       const nowStr = new Date().toLocaleString('en-GB', { hour12: false });
       const orderId = String(Date.now()).slice(-6);
       if (receiptTimeEl) receiptTimeEl.textContent = `${nowStr} • Order #${orderId}`;
-
       if (receiptCustomerEl) {
         const cname = nameEl?.value?.trim() || '____';
         const cloc  = locEl?.value?.trim()  || '____';
         const ctime = timeEl?.value?.trim() || '____';
         receiptCustomerEl.textContent = `Name: ${cname} • Location: ${cloc} • Time: ${ctime}`;
       }
-
       window.print();
     });
   }
 
-  // Copy order
+  // Copy
   if (copyBtn) {
     copyBtn.addEventListener('click', async (e) => {
       e.preventDefault();
@@ -246,7 +231,7 @@ Preferred time: ${ctime}`;
       try {
         await navigator.clipboard.writeText(msg);
         copyBtn.textContent = 'Copied!';
-      } catch (_) {
+      } catch (e2) {
         const ta = document.createElement('textarea');
         ta.value = msg;
         document.body.appendChild(ta);
@@ -259,7 +244,7 @@ Preferred time: ${ctime}`;
     });
   }
 
-  // WhatsApp open
+  // WhatsApp
   const WA_NUMBER = '971509459509'; // no +, no spaces
   if (waBtn) {
     waBtn.addEventListener('click', (e) => {
