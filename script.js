@@ -1,6 +1,25 @@
 // MC build v16
 console.log('MC build v16 loaded');
 console.log('Munna site loaded');
+const CUST_KEY = 'mc_customer_v1';
+function saveCustomer() {
+const data = {
+name: nameEl?.value || '',
+loc: locEl?.value || '',
+time: timeEl?.value || ''
+};
+try { localStorage.setItem(CUST_KEY, JSON.stringify(data)); } catch() {}
+}
+function loadCustomer() {
+try {
+const data = JSON.parse(localStorage.getItem(CUST_KEY) || '{}');
+if (nameEl && data.name) nameEl.value = data.name;
+if (locEl && data.loc) locEl.value = data.loc;
+if (timeEl && data.time) timeEl.value = data.time;
+} catch() {}
+}
+[nameEl, locEl, timeEl].forEach(el => el?.addEventListener('input', saveCustomer));
+loadCustomer();
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM ready v16');
@@ -96,6 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (waBtn) waBtn.disabled = disable;
     if (printBtn) printBtn.disabled = disable;
     if (copyBtn) copyBtn.disabled = disable;
+    const hasCustomer = (nameEl?.value?.trim() && locEl?.value?.trim());
+if (waBtn) waBtn.disabled = (total === 0) || !hasCustomer;
 
     if (summaryTotalEl) summaryTotalEl.textContent = fmt(total);
 
@@ -156,6 +177,11 @@ document.addEventListener('DOMContentLoaded', () => {
       items.forEach(li => setQty(li, 0));
       try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
       compute();
+      if (nameEl) nameEl.value = '';
+if (locEl) locEl.value = '';
+if (timeEl) timeEl.value = '';
+try { localStorage.removeItem('mc_customer_v1'); } catch(_) {}
+compute();
     });
   }
 
