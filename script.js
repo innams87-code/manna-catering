@@ -11,9 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Elements
   const printBtn = document.getElementById('print');
   const copyBtn  = document.getElementById('copy');
+  
+  
 
   const y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
+  if (y) y.textContent = new Date().getFullYear();const nameEl = document.getElementById('cust-name');
+const locEl = document.getElementById('cust-location');
+const timeEl = document.getElementById('cust-time');
 
   const menu = document.getElementById('menu');
   const countEl = document.getElementById('count');
@@ -190,25 +194,35 @@ idEl.textContent = ${now} • Order #${orderId};
   }
 
   // Copy order
-  if (copyBtn) {
-    copyBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const { msg } = buildOrderMessage();
-      try {
-        await navigator.clipboard.writeText(msg);
-        copyBtn.textContent = 'Copied!';
-      } catch (_) {
-        const ta = document.createElement('textarea');
-        ta.value = msg;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        copyBtn.textContent = 'Copied!';
-      }
-      setTimeout(() => (copyBtn.textContent = 'Copy order'), 1200);
-    });
-  }
+ function buildOrderMessage() {
+const fmt = (n) => Number(n).toFixed(2).replace(/.00$/, ''); // if not already defined
+const lines = [];
+let total = 0;
+
+items.forEach(li => {
+const qty = Number(li.dataset.qty || 0);
+if (!qty) return;
+const name = li.querySelector('.name')?.textContent.trim() || 'Item';
+const price = Number(li.dataset.price || 0);
+const lineTotal = qty * price;
+total += lineTotal;
+lines.push(${name} x${qty} — AED ${fmt(lineTotal)} (AED ${fmt(price)} ea));
+});
+
+const cname = nameEl?.value?.trim() || '';
+const cloc = locEl?.value?.trim() || '';
+const ctime = timeEl?.value?.trim() || '____';
+
+if (!lines.length) return { msg: "Hello Munna Catering, I'd like to order.", total: 0 };
+
+const msg =
+"Hello Munna Catering, I'd like to order:\n" +
+"- " + lines.join("\n- ") +
+\n\nTotal: AED ${fmt(total)}\nName: ${cname}\nDelivery location: ${cloc}\nPreferred time: ${ctime};
+
+return { msg, total };
+}
+
 
   // WhatsApp open
   const WA_NUMBER = '971509459509'; // no +, no spaces
