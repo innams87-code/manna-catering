@@ -160,3 +160,10 @@ margin: 0 !important;
 Optional small style polish (if not there yet):
 .btn.small { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
 .btn[disabled] { opacity: 0.6; cursor: not-allowed; filter: grayscale(30%); }
+.customer { display: flex; gap: 8px; justify-content: center; margin: 8px 0 12px; }
+.customer input { padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; min-width: 180px; }
+@media (max-width: 640px) { .customer { flex-direction: column; align-items: center; } .customer input { width: 100%; max-width: 320px; } }
+/* Print: keep receipt tidy */
+@media print { #summary li { break-inside: avoid; } }
+
+
